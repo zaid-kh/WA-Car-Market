@@ -190,22 +190,67 @@ console.log(
 );
 
 /** Car Operations ************************************************/
+
 // Retrieve all cars available for purchase.
 function getCarsPurchasable() {
-  // iterate over the sellers > iterate over the models
-  let cars = [];
+  let carsAvailable = [];
+  // iterate through sellers> brands> models
   carMarket.sellers.forEach((seller) => {
     seller.cars.forEach((brandObj) => {
       brandObj.models.forEach((model) => {
-        // todo
+        carsAvailable.push(model);
       });
     });
   });
+  return carsAvailable;
 }
-/***
- * return {
- *  seller,
- *  brand,
- *  model and other data,
- * }
- */
+console.log("getCarsPurchasable: ", getCarsPurchasable());
+//Search for cars based on certain criteria. The search parameters should include the production year, price, and optionally, the brand of the car.
+// todo: search function(s)
+
+// Return the most expensive car available for sale
+function getMostExpensiveCar() {
+  let priciest = {
+    price: Number.MIN_VALUE,
+  };
+  // iterate through sellers> brands> models
+  carMarket.sellers.forEach((seller) => {
+    seller.cars.forEach((brandObj) => {
+      brandObj.models.forEach((model) => {
+        // compare all prices
+        if (model.price > priciest.price) {
+          priciest = model;
+        }
+      });
+    });
+  });
+  return priciest;
+}
+console.log("getMostExpensiveCar(): ", getMostExpensiveCar());
+function getCheapestCar() {
+  let cheapest = {
+    price: Number.MAX_VALUE,
+  };
+  // iterate through sellers> brands> models
+  carMarket.sellers.forEach((seller) => {
+    seller.cars.forEach((brandObj) => {
+      brandObj.models.forEach((model) => {
+        // compare all prices
+        if (model.price < cheapest.price) {
+          cheapest = model;
+        }
+      });
+    });
+  });
+  return cheapest;
+}
+console.log("getCheapestCar(): ", getCheapestCar());
+
+/** Car Purchase Operations ********************************************/
+
+/**a sellCar function that sells a car to a specific customer. This function should:
+    1. Check the availability of the car at the agency.
+    2. Verify if the customer has enough cash to purchase the car.
+    3. Update the cash and credit for both the agency and the customer accordingly.
+    4. Update the tax authority's records. */
+function sellCar(customer, car, agency) {}
