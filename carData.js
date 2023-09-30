@@ -1,4 +1,4 @@
-const carMarket = {
+export const carMarket = {
   sellers: [
     {
       agencyName: "Best Deal",
