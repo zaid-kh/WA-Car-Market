@@ -252,5 +252,46 @@ console.log("getCheapestCar(): ", getCheapestCar());
     1. Check the availability of the car at the agency.
     2. Verify if the customer has enough cash to purchase the car.
     3. Update the cash and credit for both the agency and the customer accordingly.
-    4. Update the tax authority's records. */
-function sellCar(customer, car, agency) {}
+    4. Update the tax authority's records. 
+    */
+function sellCar(customerId, car, agencyName) {
+  // checking customer and agency's existence
+  let agency = getAgencyByName(agencyName),
+    customer = getCustomerById(customerId);
+  if (!agency) {
+    console.error(`Agency(${agencyName}) not found.`);
+    return;
+  }
+  if (!customer) {
+    console.error(`Customer with ID:(${customerId}) not found.`);
+    return;
+  }
+  let carFound = false;
+  // checking car availability
+  agency.cars.forEach((brandObj) => {
+    brandObj.models.forEach((model) => {
+      if (model.carNumber === car.carNumber) {
+        carFound = true;
+        // fill all other details e.g. price
+        car = model;
+        // checking customer funds
+        const price = car.price;
+        if (customer.cash < price) {
+          console.error(
+            `Customer ${customer.name} has insufficient funds for this car`
+          );
+          return;
+        }
+        // todo: move car ownership from agency to customer
+        customer.cash -= price;
+        agency.cash += price;
+        agency.credit -= price;
+        const taxAuth = carMarket.taxesAuthority;
+        taxAuth.numberOfTransactions++;
+        taxAuth.sumOfAllTransactions += price;
+        taxAuth.totalTaxesPaid += price * 0.17;
+      }
+    });
+  });
+}
+function getTotalMarketRevenue() {}
